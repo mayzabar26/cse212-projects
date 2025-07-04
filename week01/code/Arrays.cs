@@ -6,8 +6,6 @@ public static class Arrays
     /// integer greater than 0.
     /// </summary>
     /// <returns>array of doubles that are the multiples of the supplied number</returns>
-    /// 
-
     public static double[] MultiplesOf(double number, int length)
     {
         // TODO Problem 1 Start
