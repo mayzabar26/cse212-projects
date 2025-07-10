@@ -1,5 +1,6 @@
 ﻿public static class MysteryStack2 {
-    private static bool IsFloat(string text) {
+    private static bool IsFloat(string text)
+    {
         return float.TryParse(text, out _);
     }
 
