@@ -1,4 +1,6 @@
-﻿public class SimpleQueue {
+﻿using System.Diagnostics;
+
+public class SimpleQueue {
     public static void Run() {
         // Test Cases
 
@@ -10,7 +12,7 @@
         queue.Enqueue(100);
         var value = queue.Dequeue();
         Console.WriteLine(value);
-        // Defect(s) Found:
+        // Defect(s) Found: Index was out of range.
 
         Console.WriteLine("------------");
 
@@ -66,8 +68,8 @@
         if (_queue.Count <= 0)
             throw new IndexOutOfRangeException();
 
-        var value = _queue[1];
-        _queue.RemoveAt(1);
+        var value = _queue[0]; //it was 1, I changed to 0
+        _queue.RemoveAt(0); //it was 1, I changed to 0
         return value;
     }
 }
