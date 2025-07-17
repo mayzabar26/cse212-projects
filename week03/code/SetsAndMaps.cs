@@ -22,7 +22,34 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        //Creating HashSet to store words we've seen
+        var seen = new HashSet<string>();
+
+        //Creating a List to store the final symmetric pairs
+        var result = new List<string>();
+
+        //Condition: foreach word in words
+        foreach (var word in words)
+        {
+            //If words are the same, ignore it
+            if (word[0] == word[1])
+                continue;
+
+            //Reverse the words
+            string reversed = $"{word[1]}{word[0]}";
+
+            //if we've seen reversed word, it's a synmetric pair
+            if (seen.Contains(reversed))
+            {
+                result.Add($"{reversed} & {word}");
+            }
+            else
+            {
+                //Otherwise, store the current word in the set for future matching
+                seen.Add(word);
+            }
+        }
+        return result.ToArray();
     }
 
     /// <summary>
@@ -38,11 +65,33 @@ public static class SetsAndMaps
     /// <returns>fixed array of divisors</returns>
     public static Dictionary<string, int> SummarizeDegrees(string filename)
     {
+        //Creating dictionary to store summary degrees
         var degrees = new Dictionary<string, int>();
+
+        //Condition: Foreach line in the file
         foreach (var line in File.ReadLines(filename))
         {
+            //split line into fields using ","
             var fields = line.Split(",");
+
             // TODO Problem 2 - ADD YOUR CODE HERE
+            //Verify if line has at least 4 columms
+            if (fields.Length >= 4)
+            {
+                //Get degree from the 4th columm (index 3)
+                string degree = fields[3].Trim();
+
+                //if degree exists in the dictionary, i++
+                if (degrees.ContainsKey(degree))
+                {
+                    degrees[degree]++;
+                }
+                else
+                {
+                    //Otherwise, add it with initial count 1
+                    degrees[degree] = 1;
+                }
+            }
         }
 
         return degrees;
@@ -67,7 +116,48 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        //Clean both words: remove spaces and convert to lowercase
+        string clean1 = word1.Replace(" ", "").ToLower();
+        string clean2 = word2.Replace(" ", "").ToLower();
+
+        //Condition: if size are different, they can't be anagrams
+        if (clean1.Length != clean2.Length)
+            return false;
+
+        //Creating dictionary1: Counts letters in the first word
+        var dictionary1 = new Dictionary<char, int>();
+        foreach (char c in clean1)
+        {
+            if (dictionary1.ContainsKey(c))
+                dictionary1[c]++;
+
+            else
+                dictionary1[c] = 1;
+        }
+
+        //Creating dicionary2: Counts letters in the second word
+        var dictionary2 = new Dictionary<char, int>();
+        foreach (char c in clean2)
+        {
+            if (dictionary2.ContainsKey(c))
+                dictionary2[c]++;
+
+            else
+                dictionary2[c] = 1;
+        }
+
+        //Compare counts in both dictionaries
+        if (dictionary1.Count != dictionary2.Count)
+            return false;
+
+        //Check each letter and its count
+        foreach (var keyValuePair in dictionary1)
+        {
+            //If the letter is missing or the count is different, not an anagram
+            if (!dictionary2.ContainsKey(keyValuePair.Key) || dictionary2[keyValuePair.Key] != keyValuePair.Value)
+                return false;
+        }
+        return true;
     }
 
     /// <summary>
@@ -101,6 +191,29 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
+
+        //Condition: if there's no data, return empty array
+        if (featureCollection?.Features == null)
+        {
+            return [];
+        }
+
+        //Variable to store result
+        var result = new List<string>();
+
+        //Condition: Foreach feature in featureCollection, get place and magnitute
+        foreach (var feature in featureCollection.Features)
+        {
+            string place = feature.Properties.Place;
+            double? mag = feature.Properties.Mag;
+
+            //Avoid nulls
+            if (!string.IsNullOrEmpty(place) && mag.HasValue)
+            {
+                result.Add($"{place} - Mag {mag.Value}");
+            }
+        }
+
+        return result.ToArray();
     }
 }
