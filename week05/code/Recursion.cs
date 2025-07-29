@@ -15,7 +15,16 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        //Base case
+        if (n <= 0)
+        {
+            return 0;
+        }
+        else //Smaller problem (Recursion)
+        {
+            //Note: (n - 1) will solve the problem until it gets to 0, closer to the Base case n <= 0
+            return n * n + SumSquaresRecursive(n - 1);
+        }
     }
 
     /// <summary>
@@ -119,6 +128,25 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        //If pattern doesn't contains "*"
+        if (!pattern.Contains('*'))
+        {
+            //Add pattern to the list of results
+            results.Add(pattern);
+        }
+        else
+        {
+            //Find the position of the first "*"
+            int index = pattern.IndexOf('*');
+
+            //Replace "*" by 0
+            string withZero = pattern.Substring(0, index) + "0" + pattern.Substring(index + 1);
+            WildcardBinary(withZero, results); //Recursion
+
+            //Replace "*" by 1
+            string withOne = pattern.Substring(0, index) + "1" + pattern.Substring(index + 1);
+            WildcardBinary(withOne, results); //Recursion
+        }
     }
 
     /// <summary>
