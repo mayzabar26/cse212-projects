@@ -12,28 +12,49 @@ public class Node
     public void Insert(int value)
     {
         // TODO Start Problem 1
+        if (value < this.Data)
+        {
+            if (this.Left == null)
+            {
+                // Insert to the left
+                this.Left = new Node(value);
+            }
 
-        if (value < Data)
-        {
-            // Insert to the left
-            if (Left is null)
-                Left = new Node(value);
             else
-                Left.Insert(value);
+            {
+                this.Left.Insert(value);
+            }
         }
-        else
+        else if (value > this.Data)
         {
-            // Insert to the right
-            if (Right is null)
-                Right = new Node(value);
+            if (this.Right == null)
+            {
+                // Insert to the Right
+                this.Right = new Node(value);
+            }
             else
-                Right.Insert(value);
-        }
+            {
+                this.Right.Insert(value);
+            }
+        } 
     }
 
     public bool Contains(int value)
     {
         // TODO Start Problem 2
+        if (value == this.Data)
+        {
+            return true;
+        }
+
+        else if (value < this.Data && this.Left != null)
+        {
+            return this.Left.Contains(value);
+        }
+        else if (value > this.Data && this.Right != null)
+        {
+            return this.Right.Contains(value);
+        }
         return false;
     }
 
